@@ -44,6 +44,7 @@ function zprezto-update {
         printf "There is an update available. Trying to pull.\n\n"
         if git pull --ff-only; then
           printf "Syncing submodules\n"
+          git submodule sync --recursive
           git submodule update --init --recursive
           return $?
         else
@@ -183,7 +184,7 @@ for zmodule ("$zmodules[@]") zmodload "zsh/${(z)zmodule}"
 unset zmodule{s,}
 
 # Load more specific 'run-help' function from $fpath.
-unalias run-help && autoload -Uz run-help
+(( $+aliases[run-help] )) && unalias run-help && autoload -Uz run-help
 
 # Autoload Zsh functions.
 zstyle -a ':prezto:load' zfunction 'zfunctions'
